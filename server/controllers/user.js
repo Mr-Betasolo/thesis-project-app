@@ -1,4 +1,4 @@
-import { genPassword } from "../utils/passwordUtils";
+import { genPassword } from "../utils/passwordUtils.js";
 import UserModel from "../models/user.js";
 
 const userRegister = async (req, res) => {
@@ -19,7 +19,17 @@ const userRegister = async (req, res) => {
 
   await newUser.save();
 
-  res.status(201).redirect("/login");
+  res.status(201).json({ success: true, user: newUser });
 };
 
-export { userRegister };
+const isAuth = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res
+      .status(401)
+      .json({ success: false, message: "You are not authorized to view this" });
+  }
+};
+
+export { userRegister, isAuth };

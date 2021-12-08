@@ -1,19 +1,34 @@
 import express from "express";
 import passport from "passport";
 
-import { userRegister } from "../controllers/user.js";
+import { userRegister, isAuth } from "../controllers/user.js";
 
-const mainRouter = express.Router();
+const router = express.Router();
 
-mainRouter.get("/", (req, res) => {
+const logger = (req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
+  next();
+};
+
+router.get("/", (req, res) => {
   res.status(200).json({ success: true, msg: "this is homepage" });
 });
 
-mainRouter.post(
+router.post(
   "/login",
-  passport.authenticate("local", { successRedirect: "" })
+  passport.authenticate("local", { successRedirect: "/protected" })
 );
 
-mainRouter.post("/register", userRegister);
+router.post("/register", userRegister);
 
-export default mainRouter;
+router.get("/protected", logger, isAuth, (req, res) => {
+  res.send("You are authenticated");
+});
+
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
+
+export default router;

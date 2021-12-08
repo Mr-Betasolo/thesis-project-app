@@ -27,15 +27,14 @@ const verifyCallback = (username, password, done) => {
     .catch((err) => done(err));
 };
 
-const strategy = new LocalStrategy(customFields, verifyCallback);
-passport.use(strategy);
+passport.use(new LocalStrategy(customFields, verifyCallback));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser((userId, done) => {
-  User.findById(userId)
+  UserModel.findById(userId)
     .then((user) => {
       done(null, user);
     })
