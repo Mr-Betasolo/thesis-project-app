@@ -1,112 +1,111 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  Typography,
-  Paper,
-  Grid,
-  Button,
-  Avatar,
-  Hidden,
-} from "@material-ui/core";
+import { Typography, Grid, Paper, Button, Avatar } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 
-import InputField from "../../components/InputField/InputField";
-import loginImage from "../../images/login_image.svg";
+import LoginCard from "../../components/LoginComponents/LoginCard";
+import SignupCard from "../../components/LoginComponents/SignupCard";
+import LeftSection from "../../components/LoginComponents/LeftSection";
 import useStyles from "./styles.js";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
+  const [signupDetails, setSignupDetails] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+  });
+  const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const classes = useStyles();
 
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    if (!isSignup) {
+      setLoginDetails({ ...loginDetails, [name]: value });
+    } else {
+      setSignupDetails({ ...signupDetails, [name]: value });
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isSignup) {
+      console.log(loginDetails);
+    } else {
+      console.log(signupDetails);
+    }
+  };
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   return (
-    <>
-      <div className={classes.root}>
-        <Grid container spacing={3} alignItems="center">
-          <Hidden smDown>
-            <Grid item md={6} className={classes.leftGrid}>
-              <div className={classes.textContainer}>
-                <Typography
-                  variant="h3"
-                  align="center"
-                  className={classes.text}
-                >
-                  Welcome Back
-                </Typography>
-                <Typography variant="h6" component="p" align="center">
-                  Nice to see you again
-                </Typography>
-              </div>
-              <span></span>
-              <img src={loginImage} alt="security" className={classes.image} />
-            </Grid>
-          </Hidden>
-          <Grid item md={6} sm={12}>
-            <Paper elevation={3} className={classes.paper}>
-              <Avatar className={classes.avatar}>
+    <div className={classes.root}>
+      <Grid container spacing={3} alignItems="center">
+        <LeftSection isSignup={isSignup} />
+        <Grid item md={6} sm={12}>
+          <Paper elevation={3} className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              {isSignup ? (
+                <LockOpenOutlinedIcon />
+              ) : (
                 <AccountCircleOutlinedIcon />
-              </Avatar>
-              <Typography
-                variant="h4"
-                align="center"
-                className={classes.loginText}
-              >
-                LOGIN
-              </Typography>
-              <form
-                autoComplete="off"
-                onSubmit={handleSubmit}
-                className={classes.form}
-              >
-                <InputField
-                  name="email"
-                  label="Email"
-                  autoFocus
-                  type="email"
+              )}
+            </Avatar>
+            <Typography
+              variant="h4"
+              align="center"
+              className={classes.loginText}
+            >
+              {isSignup ? "SIGN UP" : "LOGIN"}
+            </Typography>
+            <form
+              autoComplete="off"
+              onSubmit={handleSubmit}
+              className={classes.form}
+            >
+              {isSignup ? (
+                <SignupCard
                   handleChange={handleChange}
-                />
-                <InputField
-                  name="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
                   handleShowPassword={handleShowPassword}
-                  handleChange={handleChange}
+                  showPassword={showPassword}
                 />
-                <Button
-                  className={classes.signInBtn}
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  fullWidth
+              ) : (
+                <LoginCard
+                  handleChange={handleChange}
+                  handleShowPassword={handleShowPassword}
+                  showPassword={showPassword}
+                />
+              )}
+              <Button
+                className={classes.button}
+                type="submit"
+                variant="contained"
+                color="secondary"
+                size="large"
+                fullWidth
+              >
+                {isSignup ? "SIGN UP" : "LOGIN"}
+              </Button>
+              <Typography align="center">
+                {isSignup
+                  ? "Already have an account ? "
+                  : "Don't have an account yet ? "}
+                <span
+                  className={classes.link}
+                  onClick={() => setIsSignup(!isSignup)}
                 >
-                  SIGN IN
-                </Button>
-                <Typography align="center">
-                  Don't have an account yet?{" "}
-                  <Link
-                    to="/signup"
-                    style={{
-                      textDecoration: "none",
-                      color: "#EE6C4D",
-                    }}
-                  >
-                    Create an Account
-                  </Link>
-                </Typography>
-              </form>
-            </Paper>
-          </Grid>
+                  {isSignup ? "Go to Login" : "Create an Account"}
+                </span>
+              </Typography>
+            </form>
+          </Paper>
         </Grid>
-      </div>
-    </>
+      </Grid>
+    </div>
   );
 };
 

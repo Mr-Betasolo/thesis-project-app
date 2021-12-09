@@ -6,9 +6,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     overflow: "hidden",
     padding: theme.spacing(3),
+    [theme.breakpoints.down("sm")]: {
+      background: "#98c1d9",
+    },
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(6),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -17,42 +20,32 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "29rem",
     [theme.breakpoints.down("sm")]: {
       margin: "2rem auto",
+      paddingTop: theme.spacing(3),
     },
   },
   avatar: {
     margin: theme.spacing(),
     backgroundColor: theme.palette.secondary.main,
   },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(4),
-  },
   loginText: {
     color: theme.palette.primary,
     fontWeight: "bold",
   },
-  signInBtn: {
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(4),
+  },
+  button: {
     padding: theme.spacing(2),
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(2),
     fontWeight: theme.typography.fontWeightBold,
   },
-  textContainer: {
-    marginBottom: theme.spacing(3),
-    marginTop: theme.spacing(2),
-  },
-  text: {
-    fontWeight: theme.typography.fontWeightBold,
-    color: "#ffffff",
-  },
-  leftGrid: {
-    width: "100%",
-    alignItems: "center",
-  },
-  image: {
-    width: "90%",
-    display: "block",
-    marginLeft: "auto",
+  link: {
+    cursor: "pointer",
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
 }));
 

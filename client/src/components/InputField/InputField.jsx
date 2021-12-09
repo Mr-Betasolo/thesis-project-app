@@ -5,6 +5,10 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import useStyles from "./style.js";
 
+const PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$";
+const PASSWORD_TEXT =
+  "Password must have: \nMinimum of 8 characters \nAnd have at least 1 Uppercase, 1 Lowercase and 1 Number";
+
 const InputField = ({
   name,
   handleChange,
@@ -17,6 +21,7 @@ const InputField = ({
 
   return (
     <TextField
+      id={name}
       className={classes.textField}
       name={name}
       label={label}
@@ -36,6 +41,14 @@ const InputField = ({
                   </IconButton>
                 </InputAdornment>
               ),
+            }
+          : {}
+      }
+      inputProps={
+        name === "password"
+          ? {
+              pattern: PASSWORD_PATTERN,
+              title: PASSWORD_TEXT,
             }
           : {}
       }
