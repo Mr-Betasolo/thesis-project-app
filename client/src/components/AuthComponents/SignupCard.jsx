@@ -9,14 +9,14 @@ const SignupCard = ({ handleChange, handleShowPassword, showPassword }) => {
     <>
       <div className={classes.flex}>
         <InputField
-          name="fname"
+          name="firstName"
           label="First Name"
           autoFocus
           type="text"
           handleChange={handleChange}
         />
         <InputField
-          name="lname"
+          name="lastName"
           label="Last Name"
           type="text"
           handleChange={handleChange}

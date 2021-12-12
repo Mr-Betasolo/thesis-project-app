@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import ThemeProvider from "./components/MuiTheme/MuiTheme";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
+import Auth from "./pages/Auth/Auth";
 import "./App.css";
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <ThemeProvider>
           <Routes>
             <Route path="/*" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/auth" element={<Auth />} />
           </Routes>
         </ThemeProvider>
       </Router>

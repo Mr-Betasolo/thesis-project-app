@@ -8,13 +8,13 @@ const LocalStrategy = strategy.Strategy;
 
 const customFields = {
   usernameField: "email",
-  passwordField: "pw",
+  passwordField: "password",
 };
-const verifyCallback = (username, password, done) => {
-  UserModel.findOne({ username: username })
+const verifyCallback = (email, password, done) => {
+  UserModel.findOne({ email: email })
     .then((user) => {
       // return false if there is is no user with that username
-      if (!user) return done(null, false, { message: "Incorrect username." });
+      if (!user) return done(null, false, { message: "User doesn't exist" });
 
       const isValid = validPassword(password, user.hash, user.salt);
 

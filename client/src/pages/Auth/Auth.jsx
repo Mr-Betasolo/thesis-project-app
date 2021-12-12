@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Typography, Grid, Paper, Button, Avatar } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 
-import LoginCard from "../../components/LoginComponents/LoginCard";
-import SignupCard from "../../components/LoginComponents/SignupCard";
-import LeftSection from "../../components/LoginComponents/LeftSection";
+import LoginCard from "../../components/AuthComponents/LoginCard";
+import SignupCard from "../../components/AuthComponents/SignupCard";
+import LeftSection from "../../components/AuthComponents/LeftSection";
 import useStyles from "./styles.js";
+import { login, signup } from "../../actions/authActions.js";
 
-const Login = () => {
-  const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
-  const [signupDetails, setSignupDetails] = useState({
-    fname: "",
-    lname: "",
+const Auth = () => {
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -24,22 +23,35 @@ const Login = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    if (!isSignup) {
-      setLoginDetails({ ...loginDetails, [name]: value });
-    } else {
-      setSignupDetails({ ...signupDetails, [name]: value });
-    }
+    setUser({ ...user, [name]: value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isSignup) {
-      console.log(loginDetails);
+
+    if (isSignup) {
+      const data = signup(user);
+      console.log(data);
+      reset();
     } else {
-      console.log(signupDetails);
+      const { email, password } = user;
+      login({ email, password });
     }
   };
   const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+  const handleToggleLink = () => {
+    reset();
+    setIsSignup(!isSignup);
+  };
+  const reset = () => {
+    setShowPassword(false);
+    setUser({
+      fname: "",
+      lname: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -49,11 +61,7 @@ const Login = () => {
         <Grid item md={6} sm={12}>
           <Paper elevation={3} className={classes.paper}>
             <Avatar className={classes.avatar}>
-              {isSignup ? (
-                <LockOpenOutlinedIcon />
-              ) : (
-                <AccountCircleOutlinedIcon />
-              )}
+              <AccountCircleOutlinedIcon />
             </Avatar>
             <Typography
               variant="h4"
@@ -94,10 +102,7 @@ const Login = () => {
                 {isSignup
                   ? "Already have an account ? "
                   : "Don't have an account yet ? "}
-                <span
-                  className={classes.link}
-                  onClick={() => setIsSignup(!isSignup)}
-                >
+                <span className={classes.link} onClick={handleToggleLink}>
                   {isSignup ? "Go to Login" : "Create an Account"}
                 </span>
               </Typography>
@@ -109,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Auth;
