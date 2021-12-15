@@ -5,6 +5,10 @@ import { userRegister, isAuth } from "../controllers/user.js";
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send({ status: "success" });
+});
+
 router.post("/login", passport.authenticate("local"), (req, res) => {
   try {
     const { user } = req;
