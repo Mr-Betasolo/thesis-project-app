@@ -1,22 +1,11 @@
 import express from "express";
 import passport from "passport";
 
-import { userRegister, isAuth } from "../controllers/user.js";
+import { userRegister, userLogin } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send({ status: "success" });
-});
-
-router.post("/login", passport.authenticate("local"), (req, res) => {
-  try {
-    const { user } = req;
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400).json({ success: false, message: error });
-  }
-});
+router.post("/login", passport.authenticate("local"), userLogin);
 
 router.post("/register", userRegister);
 

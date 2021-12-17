@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import passport from "passport";
+import cookieParser from "cookie-parser";
 
 import connectDB from "./utils/dbconnect.js";
-import router from "./routes/index.js";
-import cookieParser from "cookie-parser";
+import userRouter from "./routes/userRoutes.js";
+import "./strategies/jwtStrategy.js";
+import "./strategies/localStrategy.js";
 
 const app = express();
 
@@ -38,8 +41,14 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Passportjs
+app.use(passport.initialize());
+
 // Routes
-app.use(router);
+app.use("/users", userRouter);
+app.get("/", (req, res) => {
+  res.send({ status: "success" });
+});
 
 // start the server in port 8081
 const PORT = process.env.PORT || 8081;

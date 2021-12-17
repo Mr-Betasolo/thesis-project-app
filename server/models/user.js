@@ -11,8 +11,8 @@ const Session = new Schema({
 });
 
 const UserSchema = new Schema({
-  firstName: { type: String, default: "", required: true },
-  lastName: { type: String, default: "", required: true },
+  firstName: { type: String, default: "" },
+  lastName: { type: String, default: "" },
   authStrategy: {
     type: String,
     default: "local",
