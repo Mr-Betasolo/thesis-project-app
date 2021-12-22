@@ -15,7 +15,7 @@ export const userSignup = async (req, res) => {
   const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
     return res
-      .status(500)
+      .status(401)
       .json({ name: "EmailError", message: "The email already exist" });
   }
 
@@ -53,11 +53,11 @@ export const userLogin = (req, res, next) => {
       user.refreshToken.push({ refreshToken });
       user.save((err, user) => {
         if (err) {
-          res.status(500).send(err);
+          res.status(500).json(err);
         } else {
           res
             .cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
-            .send({ success: true, token });
+            .json({ success: true, token });
         }
       });
     },
@@ -99,7 +99,7 @@ export const userRefreshToken = (req, res, next) => {
                 } else {
                   res
                     .cookie("refreshToken", newRefreshToken, COOKIE_OPTIONS)
-                    .send({ success: true, token });
+                    .json({ success: true, token });
                 }
               });
             }

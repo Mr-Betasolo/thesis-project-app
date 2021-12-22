@@ -16,7 +16,7 @@ const jwtOpts = {
 passport.use(
   new Strategy(jwtOpts, (jwt_payload, done) => {
     // Check agains the DB only if necessary.
-    // Theis can be avoided if you don't want to fetch user details in each request.
+    // This can be avoided if you don't want to fetch user details in each request.
     User.findOne({ _id: jwt_payload._id }, (err, user) => {
       if (err) {
         return done(err, false);

@@ -15,6 +15,7 @@ const InputField = ({
   label,
   autoFocus,
   type,
+  error,
   handleShowPassword,
 }) => {
   const classes = useStyles();
@@ -29,6 +30,7 @@ const InputField = ({
       onChange={handleChange}
       autoFocus={autoFocus}
       variant="outlined"
+      error={error}
       fullWidth
       required
       InputProps={
