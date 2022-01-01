@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    marginTop: theme.spacing(6),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -19,8 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "3.125rem",
     maxWidth: "29rem",
     [theme.breakpoints.down("sm")]: {
-      margin: "2rem auto",
-      paddingTop: theme.spacing(3),
+      margin: "auto",
     },
   },
   avatar: {
@@ -45,6 +43,18 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     "&:hover": {
       color: theme.palette.secondary.main,
+    },
+  },
+  error: {
+    backgroundColor: "rgba(255, 0, 0, 0.2)",
+    width: "100%",
+    padding: "1rem .5rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "3%",
+    [theme.breakpoints.down("sm")]: {
+      padding: ".5rem 1rem",
     },
   },
 }));

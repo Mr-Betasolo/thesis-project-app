@@ -3,7 +3,12 @@ import React from "react";
 import useStyles from "./style";
 import InputField from "../InputField/InputField";
 
-const SignupCard = ({ handleChange, handleShowPassword, showPassword }) => {
+const SignupCard = ({
+  handleChange,
+  handleShowPassword,
+  showPassword,
+  error,
+}) => {
   const classes = useStyles();
   return (
     <>
@@ -27,6 +32,7 @@ const SignupCard = ({ handleChange, handleShowPassword, showPassword }) => {
         label="Email"
         type="email"
         handleChange={handleChange}
+        error={error}
       />
       <InputField
         name="password"

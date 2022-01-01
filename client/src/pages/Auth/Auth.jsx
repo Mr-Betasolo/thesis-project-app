@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Typography, Grid, Paper, Button, Avatar } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 
 import LoginCard from "../../components/AuthComponents/LoginCard";
 import SignupCard from "../../components/AuthComponents/SignupCard";
 import LeftSection from "../../components/AuthComponents/LeftSection";
+import { UserContext } from "../../context/userContext.js";
 import useStyles from "./styles.js";
-import { login, signup } from "../../actions/authActions.js";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
-  const [user, setUser] = useState({
+  const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -17,24 +19,104 @@ const Auth = () => {
   });
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState({
+    isError: false,
+    message: "",
+  });
+  const [userContext, setUserContext] = useContext(UserContext);
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setUser({ ...user, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (isSignup) {
-      const data = signup(user);
-      console.log(data);
-      reset();
+    const genericErrorMessage = "Something went wrong! Please try again later.";
+
+    if (!isSignup) {
+      fetch("http://localhost:8081/users/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+        }),
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              setError({
+                isError: true,
+                message: "Invalid email and password combination.",
+              });
+            } else {
+              console.log("Error", error.message);
+              setError({ isError: true, message: genericErrorMessage });
+            }
+          } else {
+            const data = await response.json();
+            setUserContext((prevValues) => {
+              return { ...prevValues, token: data.token };
+            });
+            console.log(userContext);
+            reset();
+            navigate("/dashboard");
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+          setError({
+            isError: true,
+            message: genericErrorMessage,
+          });
+        });
     } else {
-      const { email, password } = user;
-      login({ email, password });
+      fetch("http://localhost:8081/users/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              setError({
+                isError: true,
+                message: "The email already exists.",
+              });
+            } else if (response.status === 500) {
+              console.log(response);
+              const data = await response.json();
+              if (data.message) setError(data.message || genericErrorMessage);
+            } else {
+              console.log("Error", error.message);
+              setError({
+                isError: true,
+                message: genericErrorMessage,
+              });
+            }
+          } else {
+            const data = await response.json();
+            setUserContext((prevValues) => {
+              return { ...prevValues, token: data.token };
+            });
+            reset();
+            navigate("/dashboard");
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+          setError({
+            isError: true,
+            message: genericErrorMessage,
+          });
+        });
     }
   };
   const handleShowPassword = () => {
@@ -46,9 +128,10 @@ const Auth = () => {
   };
   const reset = () => {
     setShowPassword(false);
-    setUser({
-      fname: "",
-      lname: "",
+    setError({ isError: false, message: "" });
+    setUserData({
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     });
@@ -56,10 +139,22 @@ const Auth = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3} alignItems="center">
+      <Grid
+        container
+        spacing={3}
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: "100vh" }}
+      >
         <LeftSection isSignup={isSignup} />
         <Grid item md={6} sm={12}>
           <Paper elevation={3} className={classes.paper}>
+            {error.isError && (
+              <div className={classes.error}>
+                <ErrorOutlineOutlinedIcon color="primary" />
+                <Typography variant="body2">{error.message}</Typography>
+              </div>
+            )}
             <Avatar className={classes.avatar}>
               <AccountCircleOutlinedIcon />
             </Avatar>
@@ -80,12 +175,14 @@ const Auth = () => {
                   handleChange={handleChange}
                   handleShowPassword={handleShowPassword}
                   showPassword={showPassword}
+                  error={error.isError}
                 />
               ) : (
                 <LoginCard
                   handleChange={handleChange}
                   handleShowPassword={handleShowPassword}
                   showPassword={showPassword}
+                  error={error.isError}
                 />
               )}
               <Button

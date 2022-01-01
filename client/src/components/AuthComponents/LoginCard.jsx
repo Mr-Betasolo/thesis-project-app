@@ -2,7 +2,12 @@ import React from "react";
 
 import InputField from "../InputField/InputField";
 
-const LoginCard = ({ handleChange, handleShowPassword, showPassword }) => {
+const LoginCard = ({
+  handleChange,
+  handleShowPassword,
+  showPassword,
+  error,
+}) => {
   return (
     <>
       <InputField
@@ -10,6 +15,7 @@ const LoginCard = ({ handleChange, handleShowPassword, showPassword }) => {
         label="Email"
         autoFocus
         type="email"
+        error={error}
         handleChange={handleChange}
       />
       <InputField
@@ -18,6 +24,7 @@ const LoginCard = ({ handleChange, handleShowPassword, showPassword }) => {
         type={showPassword ? "text" : "password"}
         handleShowPassword={handleShowPassword}
         handleChange={handleChange}
+        error={error}
       />
     </>
   );

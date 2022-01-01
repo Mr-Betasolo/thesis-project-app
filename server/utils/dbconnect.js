@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const connectDB = async (dbstring) => {
+const connectDB = async (uri) => {
   try {
-    await mongoose.connect(dbstring);
+    await mongoose.connect(uri);
     console.log("MongoDB is Connected...");
   } catch (err) {
     console.log(err);
