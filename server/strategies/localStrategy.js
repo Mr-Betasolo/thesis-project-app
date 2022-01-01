@@ -4,6 +4,7 @@ import strategy from "passport-local";
 import User from "../models/user.js";
 
 const LocalStrategy = strategy.Strategy;
+console.log("Local strategy");
 
 // Called during login/sign up
 passport.use(User.createStrategy());

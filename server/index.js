@@ -6,8 +6,6 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./utils/dbconnect.js";
 import userRouter from "./routes/userRoutes.js";
-import "./strategies/jwtStrategy.js";
-import "./strategies/localStrategy.js";
 
 const app = express();
 
@@ -17,9 +15,12 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // MongoDB connection
-const DB_CONNECTION =
-  "mongodb+srv://renniel_betasolo:renniel_betasolo@prod-cluster.rkvtr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const DB_CONNECTION = process.env.MONGO_DB_CONNECTION_STRING;
 connectDB(DB_CONNECTION);
+
+import "./strategies/jwtStrategy.js";
+import "./strategies/localStrategy.js";
+import "./utils/tokenUtils.js";
 
 //Middleware
 app.use(express.json());

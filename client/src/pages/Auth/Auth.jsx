@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Typography, Grid, Paper, Button, Avatar } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
@@ -6,8 +6,7 @@ import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import LoginCard from "../../components/AuthComponents/LoginCard";
 import SignupCard from "../../components/AuthComponents/SignupCard";
 import LeftSection from "../../components/AuthComponents/LeftSection";
-import { useUserContext } from "../../context/userContext.js";
-import { loginUser, signupUser } from "../../api/index.js";
+import { UserContext } from "../../context/userContext.js";
 import useStyles from "./styles.js";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +23,7 @@ const Auth = () => {
     isError: false,
     message: "",
   });
-  const [userContext, setUserContext] = useUserContext();
+  const [userContext, setUserContext] = useContext(UserContext);
   const navigate = useNavigate();
 
   const classes = useStyles();
@@ -37,72 +36,86 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const genericErrorMessage = "Something went wrong! Please try again later.";
+
     if (!isSignup) {
-      loginUser({
-        email: userData.email,
-        password: userData.password,
+      fetch("http://localhost:8081/users/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+        }),
       })
-        .then((res) => {
-          // if successful
-          console.log(res.data.token);
-          setUserContext((prevValues) => {
-            return { ...prevValues, token: res.data.token };
-          });
-          reset();
-          console.log(userContext);
-          navigate("/dashboard");
-        })
-        .catch((err) => {
-          if (err.response) {
-            console.log(err.response);
-            setError({
-              isError: true,
-              message: "Invalid email and password combination.",
-            });
-          } else if (err.request) {
-            // The request was made but no response was received
-            console.log(err.request);
-            setError({
-              isError: true,
-              message: "Something went wrong! Please try again later.",
-            });
+        .then(async (response) => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              setError({
+                isError: true,
+                message: "Invalid email and password combination.",
+              });
+            } else {
+              console.log("Error", error.message);
+              setError({ isError: true, message: genericErrorMessage });
+            }
           } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", err.message);
-            setError({ isError: true, message: err.message });
+            const data = await response.json();
+            setUserContext((prevValues) => {
+              return { ...prevValues, token: data.token };
+            });
+            console.log(userContext);
+            reset();
+            navigate("/dashboard");
           }
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+          setError({
+            isError: true,
+            message: genericErrorMessage,
+          });
         });
     } else {
-      signupUser(userData)
-        .then((res) => {
-          // if successful
-          console.log(res.data.token);
-          setUserContext((prevValues) => {
-            return { ...prevValues, token: res.data.token };
-          });
-          reset();
-          console.log(userContext);
-          navigate("/dashboard");
-        })
-        .catch((err) => {
-          if (err.response) {
-            console.log(err.response);
-            setError({
-              isError: true,
-              message: err.response.data.message,
-            });
-          } else if (err.request) {
-            // The request was made but no response was received
-            console.log(err.request);
-            setError({
-              isError: true,
-              message: "Something went wrong! Please try again later.",
-            });
+      fetch("http://localhost:8081/users/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              setError({
+                isError: true,
+                message: "The email already exists.",
+              });
+            } else if (response.status === 500) {
+              console.log(response);
+              const data = await response.json();
+              if (data.message) setError(data.message || genericErrorMessage);
+            } else {
+              console.log("Error", error.message);
+              setError({
+                isError: true,
+                message: genericErrorMessage,
+              });
+            }
           } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", err.message);
-            setError({ isError: true, message: err.message });
+            const data = await response.json();
+            setUserContext((prevValues) => {
+              return { ...prevValues, token: data.token };
+            });
+            reset();
+            navigate("/dashboard");
           }
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+          setError({
+            isError: true,
+            message: genericErrorMessage,
+          });
         });
     }
   };

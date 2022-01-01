@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 import User from "../models/user.js";
 import {
-  getToken,
+  getAccessToken,
   COOKIE_OPTIONS,
   getRefreshToken,
 } from "../utils/tokenUtils.js";
@@ -28,7 +28,7 @@ export const userSignup = async (req, res) => {
       } else {
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
-        const token = getToken({ _id: user._id });
+        const token = getAccessToken({ _id: user._id });
         const refreshToken = getRefreshToken({ _id: user._id });
         user.refreshToken.push({ refreshToken });
         user.save((err, user) => {
@@ -46,18 +46,18 @@ export const userSignup = async (req, res) => {
 };
 
 export const userLogin = (req, res, next) => {
-  const token = getToken({ _id: req.user._id });
+  const token = getAccessToken({ _id: req.user._id });
   const refreshToken = getRefreshToken({ _id: req.user._id });
   User.findById(req.user._id).then(
     (user) => {
       user.refreshToken.push({ refreshToken });
       user.save((err, user) => {
         if (err) {
-          res.status(500).json(err);
+          res.status(500).send(err);
         } else {
           res
             .cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
-            .json({ success: true, token });
+            .send({ success: true, token });
         }
       });
     },
@@ -66,15 +66,17 @@ export const userLogin = (req, res, next) => {
 };
 
 export const userRefreshToken = (req, res, next) => {
-  try {
-    const { signedCookies = {} } = req;
-    const { refreshToken } = signedCookies;
+  const { signedCookies = {} } = req;
+  const { refreshToken } = signedCookies;
+  console.log(refreshToken);
 
-    if (refreshToken) {
+  if (refreshToken) {
+    try {
       const payload = jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET
       );
+      console.log(payload);
       const userId = payload._id;
       User.findOne({ _id: userId }).then(
         (user) => {
@@ -85,9 +87,10 @@ export const userRefreshToken = (req, res, next) => {
             );
 
             if (tokenIndex === -1) {
-              res.status(401).send("Unauthorized");
+              console.log("Unauthorized - invalid token");
+              res.status(401).send("Unauthorized - invalid token");
             } else {
-              const token = getToken({ _id: userId });
+              const token = getAccessToken({ _id: userId });
               // if the refresh token exists, then create new one and replace it
               const newRefreshToken = getRefreshToken({ _id: userId });
               user.refreshToken[tokenIndex] = {
@@ -97,25 +100,33 @@ export const userRefreshToken = (req, res, next) => {
                 if (err) {
                   res.status(500).send(err);
                 } else {
+                  console.log("done refresh token");
                   res
                     .cookie("refreshToken", newRefreshToken, COOKIE_OPTIONS)
-                    .json({ success: true, token });
+                    .send({ success: true, token });
                 }
               });
             }
+          } else {
+            console.log("Unauthorized - no user");
+            res.status(401).send("Unauthorized - no user");
           }
         },
         (err) => next(err)
       );
+    } catch (error) {
+      res.status(401).send("Unauthorized");
     }
-  } catch (error) {
-    res.status(401).send("Unauthorized");
+  } else {
+    console.log("Unauthorized - no Refresh token received");
+    res.status(401).send("Unauthorized - no Refresh token received");
   }
 };
 
 export const userLogout = (req, res) => {
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
+  console.log(req);
 
   User.findById(req.user._id).then(
     (user) => {

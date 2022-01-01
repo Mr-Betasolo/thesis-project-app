@@ -7,9 +7,9 @@ import {
   userRefreshToken,
   userLogout,
 } from "../controllers/userController.js";
+import { verifyUser } from "../utils/tokenUtils.js";
 
 const router = express.Router();
-const verifyUser = passport.authenticate("jwt", { session: false });
 
 router.post("/login", passport.authenticate("local"), userLogin);
 router.post("/signup", userSignup);

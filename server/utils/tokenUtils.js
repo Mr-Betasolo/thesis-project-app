@@ -10,13 +10,13 @@ export const COOKIE_OPTIONS = {
   httpOnly: true,
   // Since localhost is not having https protocol
   // secure cookies do not work correctly (in postman)
-  secure: !dev,
+  secure: true,
   signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY) * 1000,
   sameSite: "none",
 };
 
-export const getToken = (user) => {
+export const getAccessToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: eval(process.env.SESSION_EXPIRY),
   });
@@ -28,3 +28,5 @@ export const getRefreshToken = (user) => {
   });
   return refreshToken;
 };
+
+export const verifyUser = passport.authenticate("jwt", { session: false });
