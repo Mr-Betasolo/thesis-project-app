@@ -12,9 +12,8 @@ const App = () => {
   return (
     <div className="app">
       <Routes>
-        <Route element={<PrivateWrapper />}>
-          <Route path="/dashboard" element={<DashBoard />} />
-        </Route>
+        <Route element={<PrivateWrapper />}></Route>
+        <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/*" element={<Home />} />
       </Routes>

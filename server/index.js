@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./utils/dbconnect.js";
 import userRouter from "./routes/userRoutes.js";
+import dashboard from "./routes/dashboard.js";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(passport.initialize());
 
 // Routes
 app.use("/users", userRouter);
+app.use("/dashboard", dashboard);
 app.get("/", (req, res) => {
   res.send({ status: "success" });
 });

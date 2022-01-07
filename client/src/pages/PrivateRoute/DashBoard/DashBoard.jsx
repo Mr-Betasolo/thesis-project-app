@@ -1,11 +1,25 @@
-import React from 'react'
+import React, { useState } from "react";
+
+import Sidebar from "../../../components/DashboardComponents/Sidebar";
+import AppBar from "../../../components/DashboardComponents/Appbar";
+
+import useStyles from "./style.js";
 
 const DashBoard = () => {
-    return (
-        <div>
-            hello! This is the dashboard.
-        </div>
-    )
-}
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const classes = useStyles();
 
-export default DashBoard
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  return (
+    <div className={classes.root}>
+      <AppBar handleDrawerToggle={handleDrawerToggle} />
+      <Sidebar
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+      />
+    </div>
+  );
+};
+
+export default DashBoard;

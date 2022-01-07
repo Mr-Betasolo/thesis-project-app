@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 
+import { StudentSchema } from "./subjects.js";
+
 const Schema = mongoose.Schema;
 
 const Session = new Schema({
@@ -17,13 +19,11 @@ const UserSchema = new Schema({
     type: String,
     default: "local",
   },
-  points: {
-    type: Number,
-    default: 50,
-  },
   refreshToken: {
     type: [Session],
   },
+  subjects: [{ name: String, details: String }],
+  students: [StudentSchema],
 });
 
 // Remove refreshToken from the response
