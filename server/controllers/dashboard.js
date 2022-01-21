@@ -13,9 +13,12 @@ export const addSubject = (req, res) => {
         });
       }
       const isDuplicate = user.subjects.some(
-        (sub) => sub.name.toUpperCase() === subject.name.toUpperCase()
+        (sub) =>
+          sub.subjectName.toUpperCase() === subject.subjectName.toUpperCase() &&
+          sub.subjectGrade === subject.subjectGrade
       );
       if (isDuplicate) {
+        console.log("duplicate error");
         return res.status(401).send({
           name: "DuplicateError",
           message: "The subject already exist",
@@ -24,18 +27,18 @@ export const addSubject = (req, res) => {
 
       user.subjects.push(subject);
       user.save((saveErr, saveRes) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(saveErr);
+        if (saveErr) {
+          console.log(saveErr);
+          res.status(500).send(saveErr.message);
         } else {
           console.log("Subject added");
-          res.status(200).send({ success: true, message: "Subject added" });
+          res.status(200).send(saveRes);
         }
       });
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send(err);
+      res.status(400).send(err.message);
     });
 };
 
@@ -47,25 +50,24 @@ export const updateSubject = (req, res) => {
     { _id: userId, "subjects._id": newSubject._id },
     {
       $set: {
-        "subjects.$.name": newSubject.name,
+        "subjects.$.subjectName": newSubject.subjectName,
+        "subjects.$.subjectGrade": newSubject.subjectGrade,
         "subjects.$.details": newSubject.details,
       },
     },
+    { new: true },
     (err, db) => {
       if (err) {
         console.log(err);
-        return res.status(401).send(err);
+        return res.status(500).send(err);
       }
-      console.log(db);
       if (!db) {
         return res.status(404).send({
           name: "UserError",
           message: "User not found",
         });
       }
-      res
-        .status(200)
-        .send({ success: true, message: "Subject updated successfully" });
+      res.status(200).send(db);
     }
   );
 };
@@ -73,7 +75,6 @@ export const updateSubject = (req, res) => {
 export const deleteSubject = (req, res) => {
   const userId = req.params.id;
   const removeId = req.body._id;
-  console.log(removeId);
   User.findById(userId)
     .then((user) => {
       if (!user) {
@@ -86,7 +87,6 @@ export const deleteSubject = (req, res) => {
       const isFound = user.subjects.some(
         (sub) => sub._id.toString() === removeId.toString()
       );
-      console.log(isFound);
       if (!isFound) {
         return res.status(401).send({
           name: "DeleteError",
@@ -101,9 +101,7 @@ export const deleteSubject = (req, res) => {
       user.markModified("subjects");
       user.save((saveErr, saveRes) => {
         if (saveErr) return res.status(400).send(saveErr);
-        res
-          .status(200)
-          .send({ success: true, message: "Subject deleted successfully" });
+        res.status(200).send(saveRes);
       });
     })
     .catch((err) => {

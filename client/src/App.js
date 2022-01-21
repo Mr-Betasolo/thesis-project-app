@@ -5,6 +5,9 @@ import Home from "./pages/Home/Home";
 import Auth from "./pages/Auth/Auth";
 import PrivateWrapper from "./pages/PrivateRoute/PrivateWrapper";
 import DashBoard from "./pages/PrivateRoute/DashBoard/DashBoard";
+import Main from "./pages/PrivateRoute/Main/Main";
+import AddStudent from "./pages/PrivateRoute/AddStudent/AddStudent";
+import AddSubject from "./pages/PrivateRoute/AddSubject/AddSubject";
 
 import "./App.css";
 
@@ -12,10 +15,16 @@ const App = () => {
   return (
     <div className="app">
       <Routes>
-        <Route element={<PrivateWrapper />}></Route>
-        <Route path="/dashboard" element={<DashBoard />} />
+        <Route index element={<Home />} />
+        <Route path="home" element={<Home />} />
+        <Route element={<PrivateWrapper />}>
+          <Route path="dashboard" element={<DashBoard />}>
+            <Route path="subjects" element={<Main />} />
+            <Route path="addSubject" element={<AddSubject />} />
+            <Route path="addStudent" element={<AddStudent />} />
+          </Route>
+        </Route>
         <Route path="/auth" element={<Auth />} />
-        <Route path="/*" element={<Home />} />
       </Routes>
     </div>
   );

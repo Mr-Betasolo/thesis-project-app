@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Typography, Grid, Paper, Button, Avatar } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 
 import LoginCard from "../../components/AuthComponents/LoginCard";
 import SignupCard from "../../components/AuthComponents/SignupCard";
 import LeftSection from "../../components/AuthComponents/LeftSection";
+import ErrorCard from "../../components/ErrorCard/ErrorCard";
 import { UserContext } from "../../context/userContext.js";
 import useStyles from "./styles.js";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +56,6 @@ const Auth = () => {
                 message: "Invalid email and password combination.",
               });
             } else {
-              console.log("Error", error.message);
               setError({ isError: true, message: genericErrorMessage });
             }
           } else {
@@ -64,9 +63,8 @@ const Auth = () => {
             setUserContext((prevValues) => {
               return { ...prevValues, token: data.token };
             });
-            console.log(userContext);
             reset();
-            navigate("/dashboard");
+            navigate("/dashboard/subjects");
           }
         })
         .catch((error) => {
@@ -107,7 +105,7 @@ const Auth = () => {
               return { ...prevValues, token: data.token };
             });
             reset();
-            navigate("/dashboard");
+            navigate("/dashboard/subjects");
           }
         })
         .catch((error) => {
@@ -149,12 +147,7 @@ const Auth = () => {
         <LeftSection isSignup={isSignup} />
         <Grid item md={6} sm={12}>
           <Paper elevation={3} className={classes.paper}>
-            {error.isError && (
-              <div className={classes.error}>
-                <ErrorOutlineOutlinedIcon color="primary" />
-                <Typography variant="body2">{error.message}</Typography>
-              </div>
-            )}
+            {error.isError && <ErrorCard message={error.message} />}
             <Avatar className={classes.avatar}>
               <AccountCircleOutlinedIcon />
             </Avatar>

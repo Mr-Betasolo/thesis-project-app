@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useContext } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../../context/userContext.js";
 import Loader from "../../components/Loader/Loader";
 
 const PrivateWrapper = () => {
   const [userContext, setUserContext] = useContext(UserContext);
+  const navigate = useNavigate();
 
   const verifyUser = useCallback(() => {
     fetch("http://localhost:8081/users/refreshToken", {
@@ -31,6 +32,26 @@ const PrivateWrapper = () => {
   useEffect(() => {
     verifyUser();
   }, [verifyUser]);
+
+  /**
+   * Sync logout across tabs
+   */
+  const syncLogout = useCallback(
+    (event) => {
+      if (event.key === "logout") {
+        console.log("Navigate to auth");
+        navigate("/auth");
+      }
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    window.addEventListener("storage", syncLogout);
+    return () => {
+      window.removeEventListener("storage", syncLogout);
+    };
+  }, [syncLogout]);
 
   return userContext.token === null ? (
     <Navigate to="/auth" />

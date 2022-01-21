@@ -15,5 +15,6 @@ export const StudentSchema = new Schema({
   contact: { type: String },
   grade: { type: String },
   strand: { type: String },
+  specialization: { type: String },
   subjects: [SubjectSchema],
 });

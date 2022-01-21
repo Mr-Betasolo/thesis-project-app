@@ -68,7 +68,6 @@ export const userLogin = (req, res, next) => {
 export const userRefreshToken = (req, res, next) => {
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
-  console.log(refreshToken);
 
   if (refreshToken) {
     try {
@@ -76,7 +75,6 @@ export const userRefreshToken = (req, res, next) => {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET
       );
-      console.log(payload);
       const userId = payload._id;
       User.findOne({ _id: userId }).then(
         (user) => {
@@ -126,7 +124,6 @@ export const userRefreshToken = (req, res, next) => {
 export const userLogout = (req, res) => {
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
-  console.log(req);
 
   User.findById(req.user._id).then(
     (user) => {
@@ -142,6 +139,7 @@ export const userLogout = (req, res) => {
         if (err) {
           res.status(500).send(err);
         } else {
+          console.log("logout successful");
           res
             .clearCookie("refreshToken", COOKIE_OPTIONS)
             .send({ success: true });
@@ -150,14 +148,4 @@ export const userLogout = (req, res) => {
     },
     (err) => next(err)
   );
-};
-
-const isAuth = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res
-      .status(401)
-      .json({ success: false, message: "You are not authorized to view this" });
-  }
 };

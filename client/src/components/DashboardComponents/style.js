@@ -39,7 +39,11 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.complex,
     }),
   },
-  icon: {
+  link: {
+    textDecoration: "none",
+    color: "#fff",
+  },
+  sidebarIcon: {
     color: "#fff",
     paddingLeft: theme.spacing(2),
   },
@@ -47,20 +51,24 @@ const useStyles = makeStyles((theme) => ({
     "&$selected": {
       background: "rgba(255, 255, 255, 0.1)",
       // "&:hover": {
-      //   backgroundColor: "yellow",
       // },
     },
   },
   selected: {
     background: "rgba(255, 255, 255, 0.1)",
   },
-  logout: {
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
-    color: "#fff",
-    // marginTop: theme.spacing(24),
+  btnContainer: {
     position: "absolute",
-    bottom: "2.8rem",
+    bottom: "2.5rem",
+    width: "100%",
+  },
+  btn: {
+    paddingTop: ".8rem",
+    paddingBottom: ".8rem",
+    color: "#fff",
+  },
+  disabledLink: {
+    pointerEvents: "none",
   },
 
   // Appbar styles
@@ -84,6 +92,42 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(2),
     position: "absolute",
     right: "3rem",
+  },
+  // Add Subject Card Styles
+  addSubjectCard: {
+    margin: "0 1rem 1rem",
+    borderRadius: "1rem",
+    color: "#fff",
+    "&:nth-child(5n+1)": {
+      background: "linear-gradient(to right, #2ebf91, #8360c3)",
+    },
+    "&:nth-child(5n+2)": {
+      background: "linear-gradient(to right, #FF4B2B, #FF416C)",
+    },
+    "&:nth-child(5n+3)": {
+      background: "linear-gradient(to right, #2C5364, #203A43, #0F2027)",
+    },
+    "&:nth-child(5n+4)": {
+      background: "linear-gradient(to right, #B5AC49, #3CA55C)",
+    },
+    "&:nth-child(5n+5)": {
+      background: "linear-gradient(to left, #eaafc8, #654ea3)",
+    },
+  },
+  addSubjectContent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: ".5rem 2rem",
+  },
+  addSubIcon: {
+    color: "white",
+    transition: theme.transitions.create(["transform"], {
+      duration: theme.transitions.duration.complex,
+    }),
+    "&:hover": {
+      transform: "scale(1.1)",
+    },
   },
 }));
 

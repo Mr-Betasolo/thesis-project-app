@@ -14,14 +14,18 @@ import LibraryBooksRoundedIcon from "@material-ui/icons/LibraryBooksRounded";
 import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
+import CachedIcon from "@material-ui/icons/Cached";
+import { Link } from "react-router-dom";
 
 import useStyles from "./style.js";
 import logoWhite from "../../images/Logo_white.svg";
+import { useUserContext } from "../../context/userContext.js";
 
 const styledProps = { drawerWidth: 240 };
 
 const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
   const [selectedLink, setSelectedLink] = useState(0);
+  const [userContext, setUserContext] = useUserContext();
 
   const classes = useStyles(styledProps);
   const itemLists = [
@@ -31,6 +35,8 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       onClick: () => {
         setSelectedLink(0);
       },
+      disabled: () => false,
+      link: "subjects",
     },
     {
       text: "add subject",
@@ -38,6 +44,8 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       onClick: () => {
         setSelectedLink(1);
       },
+      disabled: () => false,
+      link: "addSubject",
     },
     {
       text: "add student",
@@ -45,6 +53,9 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       onClick: () => {
         setSelectedLink(2);
       },
+      disabled: () =>
+        userContext.details.subjects.length !== 0 ? false : true,
+      link: "addStudent",
     },
     {
       text: "search",
@@ -52,8 +63,35 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       onClick: () => {
         setSelectedLink(3);
       },
+      disabled: () => false,
+      link: "subjects",
     },
   ];
+
+  const logoutHandler = () => {
+    fetch("http://localhost:8081/users/logout", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+    })
+      .then(async (response) => {
+        setUserContext((oldValues) => {
+          return { ...oldValues, details: undefined, token: null };
+        });
+        localStorage.setItem("logout", Date.now());
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const refetchHandler = () => {
+    // set details to undefined so that spinner will be displayed and
+    //  fetchUserDetails will be invoked from useEffect
+    setUserContext((oldValues) => {
+      return { ...oldValues, details: undefined };
+    });
+  };
 
   const drawer = (
     <div style={{ height: "100vh", position: "relative" }}>
@@ -64,27 +102,50 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       <List className={classes.list}>
         {itemLists.map((item, index) => {
           return (
-            <ListItem
-              button
+            <Link
+              to={item.link}
               key={index}
-              className={classes.listItem}
-              classes={{ selected: classes.selected, root: classes.root }}
-              selected={index === selectedLink ? true : false}
-              onClick={item.onClick}
+              className={`${classes.link} ${
+                item.disabled() && classes.disabledLink
+              }`}
             >
-              <ListItemIcon className={classes.icon}>{item.logo}</ListItemIcon>
-              <ListItemText primary={item.text.toUpperCase()} />
-            </ListItem>
+              <ListItem
+                button
+                className={classes.listItem}
+                classes={{ selected: classes.selected, root: classes.root }}
+                selected={
+                  index === selectedLink && !item.disabled() ? true : false
+                }
+                onClick={item.onClick}
+                disabled={item.disabled()}
+              >
+                <ListItemIcon className={classes.sidebarIcon}>
+                  {item.logo}
+                </ListItemIcon>
+                <ListItemText primary={item.text.toUpperCase()} />
+              </ListItem>
+            </Link>
           );
         })}
       </List>
-      <Button
-        className={classes.logout}
-        startIcon={<ExitToAppRoundedIcon />}
-        fullWidth
-      >
-        LOGOUT
-      </Button>
+      <div className={classes.btnContainer}>
+        <Button
+          className={classes.btn}
+          startIcon={<CachedIcon />}
+          onClick={refetchHandler}
+          fullWidth
+        >
+          RELOAD USER
+        </Button>
+        <Button
+          className={classes.btn}
+          startIcon={<ExitToAppRoundedIcon />}
+          onClick={logoutHandler}
+          fullWidth
+        >
+          LOGOUT
+        </Button>
+      </div>
     </div>
   );
   const container =
@@ -95,6 +156,8 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
       <Hidden smUp implementation="js">
         <Drawer
           container={container}
+          variant="temporary"
+          anchor="left"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{

@@ -4,11 +4,14 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import useStyles from "./style";
+import { useUserContext } from "../../context/userContext.js";
 
 const styledProps = { drawerWidth: 240 };
 
 const Appbar = ({ handleDrawerToggle }) => {
+  const [userContext, setUserContext] = useUserContext();
   const classes = useStyles(styledProps);
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
@@ -32,7 +35,7 @@ const Appbar = ({ handleDrawerToggle }) => {
             <AccountCircle />
           </IconButton>
           <Typography variant="body1" className={classes.title}>
-            test@email.com
+            {userContext.details.email}
           </Typography>
         </div>
       </Toolbar>

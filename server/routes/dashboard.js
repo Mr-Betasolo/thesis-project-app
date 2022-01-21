@@ -10,7 +10,7 @@ import {
 } from "../controllers/dashboard.js";
 import { verifyUser } from "../utils/tokenUtils.js";
 
-router.post("/subject/:id", verifyUser, addSubject);
+router.post("/addSubject/:id", verifyUser, addSubject);
 router.put("/updateSubject/:id", verifyUser, updateSubject);
 router.put("/removeSubject/:id", verifyUser, deleteSubject);
 

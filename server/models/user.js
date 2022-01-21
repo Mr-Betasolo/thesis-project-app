@@ -22,7 +22,14 @@ const UserSchema = new Schema({
   refreshToken: {
     type: [Session],
   },
-  subjects: [{ name: String, details: String }],
+  subjects: [
+    {
+      subjectName: String,
+      subjectGrade: String,
+      details: String,
+      total: Number,
+    },
+  ],
   students: [StudentSchema],
 });
 

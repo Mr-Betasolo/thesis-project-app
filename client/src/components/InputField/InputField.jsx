@@ -17,11 +17,13 @@ const InputField = ({
   type,
   error,
   handleShowPassword,
+  value,
 }) => {
   const classes = useStyles();
 
   return (
     <TextField
+      value={value}
       id={name}
       className={classes.textField}
       name={name}
@@ -30,6 +32,7 @@ const InputField = ({
       onChange={handleChange}
       autoFocus={autoFocus}
       variant="outlined"
+      color="primary"
       error={error}
       fullWidth
       required
