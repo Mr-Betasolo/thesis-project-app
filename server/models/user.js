@@ -27,7 +27,7 @@ const UserSchema = new Schema({
       subjectName: String,
       subjectGrade: String,
       details: String,
-      total: Number,
+      total: { type: Number, default: 0 },
     },
   ],
   students: [StudentSchema],

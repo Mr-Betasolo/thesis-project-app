@@ -18,12 +18,14 @@ const InputField = ({
   error,
   handleShowPassword,
   value,
+  helperText,
 }) => {
   const classes = useStyles();
 
   return (
     <TextField
       value={value}
+      helperText={helperText}
       id={name}
       className={classes.textField}
       name={name}
@@ -47,6 +49,8 @@ const InputField = ({
                 </InputAdornment>
               ),
             }
+          : type === "number"
+          ? { inputProps: { min: 16, max: 65 } }
           : {}
       }
       inputProps={

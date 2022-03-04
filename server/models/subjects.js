@@ -12,6 +12,7 @@ const SubjectSchema = new Schema({
 export const StudentSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
+  age: { type: Number },
   contact: { type: String },
   grade: { type: String },
   strand: { type: String },

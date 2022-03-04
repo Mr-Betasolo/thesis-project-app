@@ -141,11 +141,11 @@ const AddSubject = () => {
     setSubjectData({ ...subjectData, [name]: value });
   };
 
-  const handleEdit = (subject) => {
-    setIsEditing(true);
-    setSubjectData(subject);
-    setError({ isError: false, message: "" });
-  };
+  // const handleEdit = (subject) => {
+  //   setIsEditing(true);
+  //   setSubjectData(subject);
+  //   setError({ isError: false, message: "" });
+  // };
 
   const handleDelete = (subject) => {
     const genericErrorMessage = "Something went wrong! Please try again later.";
@@ -210,7 +210,6 @@ const AddSubject = () => {
       <Grid item className={classes.cardContainer}>
         <AddSubjectCard
           subjects={userContext.details.subjects}
-          handleEdit={handleEdit}
           handleDelete={handleDelete}
         />
       </Grid>
