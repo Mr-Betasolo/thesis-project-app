@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Typography, IconButton } from "@material-ui/core";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
+// import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 
 import useStyles from "./style";

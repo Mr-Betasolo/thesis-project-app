@@ -14,16 +14,16 @@ const useStyles = makeStyles((theme) => ({
     justifySelf: "center",
     backgroundColor: "#e5e5e5",
     overflowX: "scroll",
-    overflowY: "none",
     flexGrow: 1,
     // flexBasis: "5%",
     maxWidth: "37%",
     padding: theme.spacing(3),
     maxHeight: `calc(150vh - 4rem)`,
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       paddingBottom: "4rem",
       marginBottom: "2rem",
+      maxWidth: "100%",
     },
   },
   inputContainer: {
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(1),
     [theme.breakpoints.down("xs")]: {
       display: "block",
+      marginBottom: theme.spacing(2),
     },
   },
   input: {
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     flexGrow: 2,
     // flexBasis: "65%",
-    overflow: "scroll",
+    overflowY: "scroll",
     height: `calc(100vh - 4rem)`,
     paddingTop: theme.spacing(3),
   },

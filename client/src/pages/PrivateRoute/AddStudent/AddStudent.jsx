@@ -155,6 +155,7 @@ const AddStudent = () => {
               console.log("2");
               return subject;
             }
+            return subject;
           });
         } else {
           newSubject = studentData.subjects;

@@ -8,6 +8,7 @@ import DashBoard from "./pages/PrivateRoute/DashBoard/DashBoard";
 import Main from "./pages/PrivateRoute/Main/Main";
 import AddStudent from "./pages/PrivateRoute/AddStudent/AddStudent";
 import AddSubject from "./pages/PrivateRoute/AddSubject/AddSubject";
+import SingleSubject from "./pages/PrivateRoute/SingleSubject/SingleSubject";
 
 import "./App.css";
 
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="subjects" element={<Main />} />
             <Route path="addSubject" element={<AddSubject />} />
             <Route path="addStudent" element={<AddStudent />} />
+            <Route path="subjects/:subjectId" element={<SingleSubject />} />
           </Route>
         </Route>
         <Route path="/auth" element={<Auth />} />
