@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     maxHeight: `calc(150vh - 4rem)`,
 
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingBottom: "4rem",
       marginBottom: "2rem",
       maxWidth: "100%",
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
   inputContainer: {
     display: "flex",
     gap: theme.spacing(1),
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "block",
       marginBottom: theme.spacing(2),
     },
   },
   input: {
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: theme.spacing(2),
     },
   },
@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "scroll",
     height: `calc(100vh - 4rem)`,
     paddingTop: theme.spacing(3),
+    [theme.breakpoints.down("sm")]: {
+      overflow: "visible",
+      marginBottom: theme.spacing(5),
+    },
   },
   text: {
     marginLeft: theme.spacing(3),

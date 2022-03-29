@@ -316,6 +316,7 @@ const AddStudent = () => {
               value={studentData.firstName}
               autoFocus={true}
               error={error.isError}
+              required={true}
             />
             <InputField
               name="lastName"
@@ -324,6 +325,7 @@ const AddStudent = () => {
               handleChange={handleChange}
               value={studentData.lastName}
               error={error.isError}
+              required={true}
             />
           </div>
 
@@ -335,6 +337,7 @@ const AddStudent = () => {
             handleChange={handleChange}
             value={studentData.contact}
             error={error.isError}
+            required={true}
           />
           <div className={classes.inputContainer}>
             <InputField
@@ -343,6 +346,7 @@ const AddStudent = () => {
               type="number"
               handleChange={handleChange}
               value={studentData.age}
+              required={true}
             />
             <TextField
               id="grade"

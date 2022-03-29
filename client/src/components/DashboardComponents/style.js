@@ -129,6 +129,36 @@ const useStyles = makeStyles((theme) => ({
       transform: "scale(1.1)",
     },
   },
+
+  // Add score style
+  scorePaper: {
+    padding: theme.spacing(5),
+    margin: theme.spacing(3),
+  },
+  flex: {
+    display: "flex",
+    gap: theme.spacing(3),
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+    },
+  },
+  scoreBtnContainer: {
+    display: "flex",
+    gap: theme.spacing(3),
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+    },
+  },
+
+  scoreBtn: {
+    flexBasis: "50%",
+    padding: theme.spacing(2),
+    "&:first-child": {
+      [theme.breakpoints.down("sm")]: {
+        marginBottom: theme.spacing(2),
+      },
+    },
+  },
 }));
 
 export default useStyles;

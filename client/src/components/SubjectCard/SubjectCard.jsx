@@ -26,7 +26,7 @@ const SubjectCard = ({ subject }) => {
     <Card className={classes.root} elevation={4}>
       <Link to={`${pathname}/${subject._id}`} className={classes.link}>
         <div className={classes.header}>
-          <Avatar aria-label="recipe" className={classes.avatar}>
+          <Avatar aria-label="avatar" className={classes.avatar}>
             {subject.subjectName[0]}
           </Avatar>
           <div className={classes.headerText}>

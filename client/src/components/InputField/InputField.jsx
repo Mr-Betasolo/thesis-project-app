@@ -19,6 +19,7 @@ const InputField = ({
   handleShowPassword,
   value,
   helperText,
+  required,
 }) => {
   const classes = useStyles();
 
@@ -37,7 +38,7 @@ const InputField = ({
       color="primary"
       error={error}
       fullWidth
-      required
+      required={required}
       InputProps={
         name === "password"
           ? {
@@ -49,8 +50,10 @@ const InputField = ({
                 </InputAdornment>
               ),
             }
-          : type === "number"
+          : name === "age"
           ? { inputProps: { min: 16, max: 65 } }
+          : type === "number"
+          ? { inputProps: { min: 0 } }
           : {}
       }
       inputProps={

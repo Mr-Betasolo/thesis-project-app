@@ -225,6 +225,7 @@ const AddSubject = () => {
               value={subjectData.subjectName}
               autoFocus={true}
               error={error.isError}
+              required={true}
             />
             <TextField
               className={classes.input}

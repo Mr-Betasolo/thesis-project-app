@@ -17,6 +17,7 @@ const LoginCard = ({
         type="email"
         error={error}
         handleChange={handleChange}
+        required={true}
       />
       <InputField
         name="password"
@@ -25,6 +26,7 @@ const LoginCard = ({
         handleShowPassword={handleShowPassword}
         handleChange={handleChange}
         error={error}
+        required={true}
       />
     </>
   );

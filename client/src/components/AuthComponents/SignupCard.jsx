@@ -19,12 +19,14 @@ const SignupCard = ({
           autoFocus
           type="text"
           handleChange={handleChange}
+          required={true}
         />
         <InputField
           name="lastName"
           label="Last Name"
           type="text"
           handleChange={handleChange}
+          required={true}
         />
       </div>
       <InputField
@@ -33,6 +35,7 @@ const SignupCard = ({
         type="email"
         handleChange={handleChange}
         error={error}
+        required={true}
       />
       <InputField
         name="password"
@@ -40,6 +43,7 @@ const SignupCard = ({
         type={showPassword ? "text" : "password"}
         handleShowPassword={handleShowPassword}
         handleChange={handleChange}
+        required={true}
       />
     </>
   );

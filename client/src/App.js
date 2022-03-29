@@ -9,6 +9,7 @@ import Main from "./pages/PrivateRoute/Main/Main";
 import AddStudent from "./pages/PrivateRoute/AddStudent/AddStudent";
 import AddSubject from "./pages/PrivateRoute/AddSubject/AddSubject";
 import SingleSubject from "./pages/PrivateRoute/SingleSubject/SingleSubject";
+import StudentGraph from "./pages/PrivateRoute/StudentGraph/StudentGraph";
 
 import "./App.css";
 
@@ -24,6 +25,10 @@ const App = () => {
             <Route path="addSubject" element={<AddSubject />} />
             <Route path="addStudent" element={<AddStudent />} />
             <Route path="subjects/:subjectId" element={<SingleSubject />} />
+            <Route
+              path="subjects/:subjectId/:studentId"
+              element={<StudentGraph />}
+            />
           </Route>
         </Route>
         <Route path="/auth" element={<Auth />} />

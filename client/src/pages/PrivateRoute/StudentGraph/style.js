@@ -1,0 +1,34 @@
+import { makeStyles } from "@material-ui/core";
+
+const useStyle = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+  },
+  bottom: {
+    display: "flex",
+    gap: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+    },
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  nameCard: {
+    width: "100%",
+    color: "#fff",
+    padding: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(3),
+    background: "linear-gradient(to right, #fdc830, #f37335)",
+    borderRadius: "1.5rem",
+    boxShadow: "2px 2px 5px 1px rgba(0, 0, 0, .2)",
+  },
+  infoText: {
+    backgroundColor: "#fff",
+    padding: theme.spacing(3),
+
+    boxShadow: "2px 2px 5px 1px rgba(0, 0, 0, .2)",
+  },
+}));
+
+export default useStyle;
