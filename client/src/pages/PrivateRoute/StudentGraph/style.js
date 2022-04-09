@@ -6,7 +6,7 @@ const useStyle = makeStyles((theme) => ({
   },
   bottom: {
     display: "flex",
-    gap: theme.spacing(2),
+    gap: theme.spacing(4),
     [theme.breakpoints.down("sm")]: {
       display: "block",
     },
@@ -26,8 +26,13 @@ const useStyle = makeStyles((theme) => ({
   infoText: {
     backgroundColor: "#fff",
     padding: theme.spacing(3),
-
+    // background: "linear-gradient(to right, #fdc830, #f37335)",
+    // color: "#fff",
     boxShadow: "2px 2px 5px 1px rgba(0, 0, 0, .2)",
+  },
+  title: {
+    fontSize: "1.5rem",
+    color: "#3D5A80",
   },
 }));
 

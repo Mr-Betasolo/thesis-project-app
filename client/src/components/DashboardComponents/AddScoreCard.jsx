@@ -3,18 +3,30 @@ import { Paper, Typography, Button } from "@material-ui/core";
 
 import InputField from "../InputField/InputField";
 import useStyle from "./style.js";
+import ErrorCard from "../ErrorCard/ErrorCard";
 
-const AddScoreCard = () => {
+const AddScoreCard = ({ handleChange, reset, scores, handleSubmit, error }) => {
   const classes = useStyle();
-  const handleChange = () => {};
-  const reset = () => {};
 
   return (
     <Paper className={classes.scorePaper} elevation={5}>
       <Typography variant="h5" component="p" gutterBottom>
         Scores
       </Typography>
-      <form autoComplete="off" style={{ marginTop: "1.5rem" }}>
+      {error.hwError ? (
+        <ErrorCard message={error.message} />
+      ) : error.qzError ? (
+        <ErrorCard message={error.message} />
+      ) : error.exError ? (
+        <ErrorCard message={error.message} />
+      ) : error.fetchError ? (
+        <ErrorCard message={error.message} />
+      ) : null}
+      <form
+        autoComplete="off"
+        style={{ marginTop: "1.5rem" }}
+        onSubmit={handleSubmit}
+      >
         <div className={classes.flex}>
           <InputField
             name="hwScore"
@@ -22,8 +34,9 @@ const AddScoreCard = () => {
             handleChange={handleChange}
             label="Homework"
             helperText="Enter the homework score"
-            autoFocus={true}
             type="number"
+            value={scores.homework}
+            error={error.hwError}
           />
           <InputField
             name="hwTotal"
@@ -32,6 +45,8 @@ const AddScoreCard = () => {
             label="Total"
             helperText="Enter the homework total"
             type="number"
+            value={scores.hwTotal}
+            error={error.hwError}
           />
         </div>
         <div className={classes.flex}>
@@ -42,6 +57,8 @@ const AddScoreCard = () => {
             label="Quiz"
             helperText="Enter the quiz score"
             type="number"
+            value={scores.quiz}
+            error={error.qzError}
           />
           <InputField
             name="quizTotal"
@@ -50,6 +67,8 @@ const AddScoreCard = () => {
             label="Total"
             helperText="Enter the quiz total"
             type="number"
+            value={scores.quizTotal}
+            error={error.qzError}
           />
         </div>
         <div className={classes.flex}>
@@ -60,6 +79,8 @@ const AddScoreCard = () => {
             label="Exam"
             helperText="Enter the exam score"
             type="number"
+            value={scores.exam}
+            error={error.exError}
           />
           <InputField
             name="examTotal"
@@ -68,6 +89,8 @@ const AddScoreCard = () => {
             label="Total"
             helperText="Enter the exam total"
             type="number"
+            value={scores.examTotal}
+            error={error.exError}
           />
         </div>
         <div className={classes.scoreBtnContainer}>

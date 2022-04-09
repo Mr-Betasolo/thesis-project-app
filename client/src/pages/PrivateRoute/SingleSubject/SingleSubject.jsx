@@ -22,6 +22,7 @@ const SingleSubject = () => {
     if (hasSubject) {
       return student;
     }
+    return undefined;
   });
 
   students = students.filter((student) => student !== undefined);

@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const SubjectSchema = new Schema({
   name: { type: String },
-  homeworks: [Number],
-  quizzes: [Number],
-  exams: [Number],
+  homeworks: [],
+  quizzes: [],
+  exams: [],
 });
 
 export const StudentSchema = new Schema({

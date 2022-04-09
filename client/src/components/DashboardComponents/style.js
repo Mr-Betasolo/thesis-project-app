@@ -133,7 +133,8 @@ const useStyles = makeStyles((theme) => ({
   // Add score style
   scorePaper: {
     padding: theme.spacing(5),
-    margin: theme.spacing(3),
+    // margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
   },
   flex: {
     display: "flex",

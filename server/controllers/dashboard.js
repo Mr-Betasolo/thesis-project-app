@@ -230,3 +230,34 @@ export const deleteStudent = (req, res) => {
       res.status(400).send(err);
     });
 };
+
+// add score
+export const addScore = (req, res) => {
+  const userId = req.params.userId;
+  const studentId = req.params.studentId;
+  const newSubjects = req.body;
+
+  User.findOneAndUpdate(
+    { _id: userId, "students._id": studentId },
+    {
+      $set: {
+        "students.$.subjects": newSubjects,
+      },
+    },
+    { new: true },
+    (err, db) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+      if (!db) {
+        console.log(err);
+        return res.status(404).send({
+          name: "UserError",
+          message: "User not found",
+        });
+      }
+      res.status(200).send(db);
+    }
+  );
+};

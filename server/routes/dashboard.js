@@ -9,6 +9,7 @@ import {
   addStudent,
   updateStudent,
   deleteStudent,
+  addScore,
 } from "../controllers/dashboard.js";
 import { verifyUser } from "../utils/tokenUtils.js";
 
@@ -21,5 +22,8 @@ router.put("/removeSubject/:id", verifyUser, deleteSubject);
 router.post("/addStudent/:id", verifyUser, addStudent);
 router.put("/updateStudent/:id", verifyUser, updateStudent);
 router.put("/removeStudent/:id", verifyUser, deleteStudent);
+
+// score routes
+router.put("/addScore/:userId/:studentId", verifyUser, addScore);
 
 export default router;
