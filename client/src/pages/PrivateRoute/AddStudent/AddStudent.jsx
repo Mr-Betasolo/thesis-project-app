@@ -12,6 +12,7 @@ import useStyles from "./style.js";
 import InputField from "../../../components/InputField/InputField";
 import ErrorCard from "../../../components/ErrorCard/ErrorCard";
 import AddStudentCard from "../../../components/DashboardComponents/AddStudentCard";
+import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard.jsx";
 import { useUserContext } from "../../../context/userContext";
 
 const gradeLevels = [
@@ -44,6 +45,11 @@ const AddStudent = () => {
     message: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmAlert, setConfirmAlert] = useState({
+    isOpen: false,
+    message: "",
+  });
+  const [editId, setEditId] = useState(null);
 
   const subjects = userContext.details.subjects.map((subject) => {
     return { name: subject.subjectName };
@@ -126,6 +132,10 @@ const AddStudent = () => {
               setUserContext((oldValues) => {
                 return { ...oldValues, details: data };
               });
+              setConfirmAlert({
+                isOpen: true,
+                message: "Successfully Added Student",
+              });
               reset();
             }
           })
@@ -137,22 +147,17 @@ const AddStudent = () => {
             });
           });
       } else {
-        const student = userContext.details.students.filter(
-          (student) =>
-            student.firstName === studentData.firstName &&
-            student.lastName === studentData.lastName &&
-            student.grade === studentData.grade
+        const [student] = userContext.details.students.filter(
+          (student) => student._id === editId
         );
         let newSubject;
-        if (student[0].subjects) {
+        if (student.subjects) {
           newSubject = studentData.subjects.map((subject) => {
             for (let i = 0; i < studentData.subjects.length; i++) {
               console.log(subject);
               if (studentData.subjects[i].name === subject.name) {
-                console.log("1");
                 return subject;
               }
-              console.log("2");
               return subject;
             }
             return subject;
@@ -160,7 +165,6 @@ const AddStudent = () => {
         } else {
           newSubject = studentData.subjects;
         }
-        console.log(newSubject);
 
         fetch(`http://localhost:8081/dashboard/updateStudent/${userId}`, {
           method: "PUT",
@@ -187,6 +191,10 @@ const AddStudent = () => {
               setUserContext((oldValues) => {
                 return { ...oldValues, details: data };
               });
+              setConfirmAlert({
+                isOpen: true,
+                message: "Successfully Edited Student",
+              });
               reset();
             }
           })
@@ -203,6 +211,7 @@ const AddStudent = () => {
   const handleEdit = (student) => {
     setIsEditing(true);
     setStudentData(student);
+    setEditId(student._id);
     setError({ isError: false, message: "" });
   };
   const handleDelete = (student) => {
@@ -239,6 +248,10 @@ const AddStudent = () => {
           const data = await response.json();
           setUserContext((oldValues) => {
             return { ...oldValues, details: data };
+          });
+          setConfirmAlert({
+            isOpen: true,
+            message: "Successfully deleted student",
           });
           reset();
         }
@@ -302,6 +315,10 @@ const AddStudent = () => {
       </Grid>
       <Grid item className={classes.formContainer}>
         <form autoComplete="off" onSubmit={handleSubmit}>
+          <ConfirmCard
+            confirmAlert={confirmAlert}
+            setConfirmAlert={setConfirmAlert}
+          />
           {error.isError && (
             <div style={{ marginBottom: "2rem" }}>
               <ErrorCard message={error.message} />

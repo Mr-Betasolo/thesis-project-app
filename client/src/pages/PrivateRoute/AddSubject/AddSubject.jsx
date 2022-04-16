@@ -5,6 +5,7 @@ import useStyles from "./style";
 import InputField from "../../../components/InputField/InputField";
 import ErrorCard from "../../../components/ErrorCard/ErrorCard";
 import AddSubjectCard from "../../../components/DashboardComponents/AddSubjectCard";
+import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard";
 import { useUserContext } from "../../../context/userContext";
 
 const gradeLevels = [
@@ -33,6 +34,10 @@ const AddSubject = () => {
     message: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmAlert, setConfirmAlert] = useState({
+    isOpen: false,
+    message: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,6 +75,10 @@ const AddSubject = () => {
             const data = await response.json();
             setUserContext((oldValues) => {
               return { ...oldValues, details: data };
+            });
+            setConfirmAlert({
+              isOpen: true,
+              message: "Successfully Added Subject",
             });
             reset();
           }
@@ -121,6 +130,10 @@ const AddSubject = () => {
             const data = await response.json();
             setUserContext((oldValues) => {
               return { ...oldValues, details: data };
+            });
+            setConfirmAlert({
+              isOpen: true,
+              message: "Successfully edited subject",
             });
             reset();
           }
@@ -182,6 +195,10 @@ const AddSubject = () => {
           setUserContext((oldValues) => {
             return { ...oldValues, details: data };
           });
+          setConfirmAlert({
+            isOpen: true,
+            message: "Successfully deleted Subject",
+          });
           reset();
         }
       })
@@ -215,6 +232,10 @@ const AddSubject = () => {
       </Grid>
       <Grid item className={classes.formContainer}>
         <form onSubmit={handleSubmit} autoComplete="off">
+          <ConfirmCard
+            confirmAlert={confirmAlert}
+            setConfirmAlert={setConfirmAlert}
+          />
           {error.isError && <ErrorCard message={error.message} />}
           <div style={{ marginTop: "2rem" }}>
             <InputField

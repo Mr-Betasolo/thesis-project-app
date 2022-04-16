@@ -142,7 +142,7 @@ const Auth = () => {
         spacing={3}
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: "100vh" }}
+        style={{ minHeight: "95vh" }}
       >
         <LeftSection isSignup={isSignup} />
         <Grid item md={6} sm={12}>

@@ -6,6 +6,7 @@ import useStyle from "./style";
 import { useUserContext } from "../../../context/userContext";
 import AddScoreCard from "../../../components/DashboardComponents/AddScoreCard";
 import LineChart from "../../../components/LineChart/LineChart";
+import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard";
 
 const StudentGraph = () => {
   const [scores, setScores] = useState({
@@ -24,6 +25,10 @@ const StudentGraph = () => {
     message: "",
   });
   const [chartData, setChartData] = useState([]);
+  const [confirmAlert, setConfirmAlert] = useState({
+    isOpen: false,
+    message: "Score Added",
+  });
 
   const { subjectId, studentId } = useParams();
   const classes = useStyle();
@@ -160,14 +165,14 @@ const StudentGraph = () => {
           setUserContext((oldValues) => {
             return { ...oldValues, details: data };
           });
+          setConfirmAlert({ isOpen: true, message: "Score Added" });
+          reset();
         }
       })
       .catch((err) => {
         console.log("Error", err.message);
         setError({ fetchError: true, message: genericErrorMessage });
       });
-
-    reset();
   };
 
   const reset = () => {
@@ -254,7 +259,7 @@ const StudentGraph = () => {
     <div className={classes.root}>
       <div className={classes.top}>
         <Typography className={classes.title}>
-          {subjectName.subjectName}
+          {subjectName.subjectName.toUpperCase()}
         </Typography>
         <LineChart chartData={chartData} />
       </div>
@@ -294,6 +299,10 @@ const StudentGraph = () => {
           </div>
         </section>
         <section className={classes.addScoreCard}>
+          <ConfirmCard
+            confirmAlert={confirmAlert}
+            setConfirmAlert={setConfirmAlert}
+          />
           <AddScoreCard
             handleChange={handleChange}
             reset={reset}

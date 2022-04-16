@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 const useStyle = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
   bottom: {
     display: "flex",
@@ -31,7 +32,8 @@ const useStyle = makeStyles((theme) => ({
     boxShadow: "2px 2px 5px 1px rgba(0, 0, 0, .2)",
   },
   title: {
-    fontSize: "1.5rem",
+    fontSize: "1.7rem",
+    fontWeight: 700,
     color: "#3D5A80",
   },
 }));
