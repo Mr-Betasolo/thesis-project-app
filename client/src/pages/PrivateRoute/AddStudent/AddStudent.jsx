@@ -13,6 +13,7 @@ import InputField from "../../../components/InputField/InputField";
 import ErrorCard from "../../../components/ErrorCard/ErrorCard";
 import AddStudentCard from "../../../components/DashboardComponents/AddStudentCard";
 import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard.jsx";
+import EmptyData from "../../../components/EmptyData/EmptyData";
 import { useUserContext } from "../../../context/userContext";
 
 const gradeLevels = [
@@ -50,6 +51,8 @@ const AddStudent = () => {
     message: "",
   });
   const [editId, setEditId] = useState(null);
+
+  const hasStudent = userContext.details.students.length !== 0;
 
   const subjects = userContext.details.subjects.map((subject) => {
     return { name: subject.subjectName };
@@ -296,22 +299,28 @@ const AddStudent = () => {
   return (
     <Grid container className={classes.root}>
       <Grid item className={classes.cardContainer}>
-        <Typography className={classes.text} variant="h5" gutterBottom>
-          Grade 11
-        </Typography>
-        <AddStudentCard
-          students={grade11}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
-        <Typography className={classes.text} variant="h5" gutterBottom>
-          Grade 12
-        </Typography>
-        <AddStudentCard
-          students={grade12}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
+        {hasStudent ? (
+          <>
+            <Typography className={classes.text} variant="h5" gutterBottom>
+              Grade 11
+            </Typography>
+            <AddStudentCard
+              students={grade11}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+            <Typography className={classes.text} variant="h5" gutterBottom>
+              Grade 12
+            </Typography>
+            <AddStudentCard
+              students={grade12}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+          </>
+        ) : (
+          <EmptyData name="Students" />
+        )}
       </Grid>
       <Grid item className={classes.formContainer}>
         <form autoComplete="off" onSubmit={handleSubmit}>

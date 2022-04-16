@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: `calc(150vh - 4rem)`,
 
     [theme.breakpoints.down("sm")]: {
+      alignItems: "center",
       paddingBottom: "4rem",
       marginBottom: "2rem",
       maxWidth: "100%",
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   // card styles
   cardContainer: {
     flexGrow: 2,
-    // flexBasis: "65%",
+    flexBasis: "50%",
     overflowY: "scroll",
     height: `calc(100vh - 4rem)`,
     paddingTop: theme.spacing(3),

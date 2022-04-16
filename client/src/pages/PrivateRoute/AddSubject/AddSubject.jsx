@@ -7,6 +7,7 @@ import ErrorCard from "../../../components/ErrorCard/ErrorCard";
 import AddSubjectCard from "../../../components/DashboardComponents/AddSubjectCard";
 import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard";
 import { useUserContext } from "../../../context/userContext";
+import EmptyData from "../../../components/EmptyData/EmptyData";
 
 const gradeLevels = [
   {
@@ -38,6 +39,8 @@ const AddSubject = () => {
     isOpen: false,
     message: "",
   });
+
+  const hasSubject = userContext.details.subjects.length !== 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -225,10 +228,14 @@ const AddSubject = () => {
   return (
     <Grid container className={classes.root}>
       <Grid item className={classes.cardContainer}>
-        <AddSubjectCard
-          subjects={userContext.details.subjects}
-          handleDelete={handleDelete}
-        />
+        {hasSubject ? (
+          <AddSubjectCard
+            subjects={userContext.details.subjects}
+            handleDelete={handleDelete}
+          />
+        ) : (
+          <EmptyData name="Subjects" />
+        )}
       </Grid>
       <Grid item className={classes.formContainer}>
         <form onSubmit={handleSubmit} autoComplete="off">

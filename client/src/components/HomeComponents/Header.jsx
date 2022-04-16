@@ -37,15 +37,15 @@ const Header = () => {
   const handleLink = (e) => {
     setAnchorEl(null);
     if (e.currentTarget.innerText === "Home") {
-      navigate("/");
+      navigate("/home");
     } else if (e.currentTarget.innerText === "About Us") {
-      navigate("/");
+      navigate("/home");
     } else if (e.currentTarget.innerText === "Contacts") {
-      navigate("/");
+      navigate("/home");
     } else if (e.currentTarget.innerText === "Signup") {
       navigate("/auth");
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 
@@ -64,7 +64,7 @@ const Header = () => {
       <Container maxWidth="lg">
         <Toolbar className={classes.toolbar}>
           <div className={classes.logoContainer}>
-            <Link to="/">
+            <Link to="/home">
               <img src={logoImage} alt="logo" width="100" />
             </Link>
           </div>
@@ -114,7 +114,11 @@ const Header = () => {
               <div className={classes.navLink}>
                 <List className={classes.list}>
                   {menuLists.map((list, index) => (
-                    <ListItem key={index} className={classes.listItem}>
+                    <ListItem
+                      key={index}
+                      className={classes.listItem}
+                      onClick={handleLink}
+                    >
                       <Typography
                         variant="body2"
                         color="primary"

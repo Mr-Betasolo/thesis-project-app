@@ -10,6 +10,7 @@ import AddStudent from "./pages/PrivateRoute/AddStudent/AddStudent";
 import AddSubject from "./pages/PrivateRoute/AddSubject/AddSubject";
 import SingleSubject from "./pages/PrivateRoute/SingleSubject/SingleSubject";
 import StudentGraph from "./pages/PrivateRoute/StudentGraph/StudentGraph";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 import "./App.css";
 
@@ -32,6 +33,7 @@ const App = () => {
           </Route>
         </Route>
         <Route path="/auth" element={<Auth />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
