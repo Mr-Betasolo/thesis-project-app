@@ -12,7 +12,7 @@ import {
 import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
 import LibraryBooksRoundedIcon from "@material-ui/icons/LibraryBooksRounded";
 import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
-import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
+// import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import CachedIcon from "@material-ui/icons/Cached";
 import { Link } from "react-router-dom";
@@ -26,6 +26,7 @@ const styledProps = { drawerWidth: 240 };
 const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
   const [selectedLink, setSelectedLink] = useState(0);
   const [userContext, setUserContext] = useUserContext();
+  const [disabled, setDisabled] = useState(false);
 
   const classes = useStyles(styledProps);
   const itemLists = [
@@ -57,15 +58,15 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
         userContext.details.subjects.length !== 0 ? false : true,
       link: "addStudent",
     },
-    {
-      text: "search",
-      logo: <SearchRoundedIcon />,
-      onClick: () => {
-        setSelectedLink(3);
-      },
-      disabled: () => false,
-      link: "subjects",
-    },
+    // {
+    //   text: "search",
+    //   logo: <SearchRoundedIcon />,
+    //   onClick: () => {
+    //     setSelectedLink(3);
+    //   },
+    //   disabled: () => false,
+    //   link: "subjects",
+    // },
   ];
 
   const logoutHandler = () => {

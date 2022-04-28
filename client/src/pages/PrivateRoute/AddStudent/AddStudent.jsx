@@ -14,6 +14,8 @@ import ErrorCard from "../../../components/ErrorCard/ErrorCard";
 import AddStudentCard from "../../../components/DashboardComponents/AddStudentCard";
 import ConfirmCard from "../../../components/ConfirmCard/ConfirmCard.jsx";
 import EmptyData from "../../../components/EmptyData/EmptyData";
+import Search from "../../../components/DashboardComponents/Search";
+
 import { useUserContext } from "../../../context/userContext";
 
 const gradeLevels = [
@@ -51,6 +53,8 @@ const AddStudent = () => {
     message: "",
   });
   const [editId, setEditId] = useState(null);
+  const [searchStudent, setSearchStudent] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
   const hasStudent = userContext.details.students.length !== 0;
 
@@ -281,6 +285,8 @@ const AddStudent = () => {
     });
     setError({ isError: false, message: "" });
     setIsEditing(false);
+    setSearchInput("");
+    setSearchStudent(null);
   };
   const specialization = () => {
     if (studentData.strand === "HUMSS") {
@@ -296,10 +302,43 @@ const AddStudent = () => {
     }
   };
 
+  const handleSearch = () => {
+    if (!searchInput) {
+      setSearchStudent(null);
+      return;
+    }
+    const searchStud = userContext.details.students.filter(
+      (student) => student.lastName.toUpperCase() === searchInput.toUpperCase()
+    );
+    console.log(searchStud);
+
+    if (searchStud.length !== 0) {
+      setSearchStudent(searchStud);
+    } else {
+      setSearchStudent([]);
+    }
+  };
+
   return (
     <Grid container className={classes.root}>
       <Grid item className={classes.cardContainer}>
-        {hasStudent ? (
+        <Search
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          handleSearch={handleSearch}
+          label="last name"
+        />
+        {!hasStudent ? (
+          <EmptyData name="Students" />
+        ) : searchStudent !== null ? (
+          <>
+            <AddStudentCard
+              students={searchStudent}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+          </>
+        ) : (
           <>
             <Typography className={classes.text} variant="h5" gutterBottom>
               Grade 11
@@ -318,8 +357,6 @@ const AddStudent = () => {
               handleDelete={handleDelete}
             />
           </>
-        ) : (
-          <EmptyData name="Students" />
         )}
       </Grid>
       <Grid item className={classes.formContainer}>

@@ -160,6 +160,19 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+
+  // search
+  margin: {
+    marginRight: theme.spacing(3),
+    marginTop: 0,
+    marginBottom: theme.spacing(2),
+  },
+  textField: {
+    width: "25ch",
+  },
+  searchRoot: {
+    textAlign: "right",
+  },
 }));
 
 export default useStyles;

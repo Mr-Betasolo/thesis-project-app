@@ -23,6 +23,8 @@ const gradeLevels = [
 const AddSubject = () => {
   const classes = useStyles();
   const [userContext, setUserContext] = useUserContext();
+  const [searchSubject, setSearchSubject] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
   const [subjectData, setSubjectData] = useState({
     subjectName: "",
@@ -223,6 +225,8 @@ const AddSubject = () => {
     });
     setError({ isError: false, message: "" });
     setIsEditing(false);
+    setSearchSubject(null);
+    setSearchInput("");
   };
 
   return (
@@ -232,6 +236,10 @@ const AddSubject = () => {
           <AddSubjectCard
             subjects={userContext.details.subjects}
             handleDelete={handleDelete}
+            setSearchSubject={setSearchSubject}
+            searchSubject={searchSubject}
+            setSearchInput={setSearchInput}
+            searchInput={searchInput}
           />
         ) : (
           <EmptyData name="Subjects" />
