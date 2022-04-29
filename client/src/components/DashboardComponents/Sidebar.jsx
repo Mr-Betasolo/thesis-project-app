@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   Divider,
@@ -69,6 +69,12 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
     // },
   ];
 
+  useEffect(() => {
+    userContext.details.subjects.length !== 0
+      ? setDisabled(false)
+      : setDisabled(true);
+  }, [userContext.details.subjects]);
+
   const logoutHandler = () => {
     fetch("http://localhost:8081/users/logout", {
       credentials: "include",
@@ -107,18 +113,18 @@ const Sidebar = ({ window, mobileOpen, handleDrawerToggle }) => {
               to={item.link}
               key={index}
               className={`${classes.link} ${
-                item.disabled() && classes.disabledLink
+                item.text === "add student" && disabled
+                  ? classes.disabledLink
+                  : null
               }`}
             >
               <ListItem
                 button
                 className={classes.listItem}
                 classes={{ selected: classes.selected, root: classes.root }}
-                selected={
-                  index === selectedLink && !item.disabled() ? true : false
-                }
+                selected={index === selectedLink}
                 onClick={item.onClick}
-                disabled={item.disabled()}
+                disabled={item.text === "add student" ? disabled : false}
               >
                 <ListItemIcon className={classes.sidebarIcon}>
                   {item.logo}
