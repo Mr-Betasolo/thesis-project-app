@@ -322,16 +322,16 @@ const AddStudent = () => {
   return (
     <Grid container className={classes.root}>
       <Grid item className={classes.cardContainer}>
-        <Search
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          handleSearch={handleSearch}
-          label="last name"
-        />
         {!hasStudent ? (
           <EmptyData name="Students" />
         ) : searchStudent !== null ? (
           <>
+            <Search
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+              handleSearch={handleSearch}
+              label="last name"
+            />
             <AddStudentCard
               students={searchStudent}
               handleEdit={handleEdit}
